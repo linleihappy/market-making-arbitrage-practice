@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ef">
+  <title>The Quote Room — Market Practice</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+    :root{--ink:#202723;--muted:#778079;--line:#e4e7df;--paper:#f5f4ef;--white:#fff;--green:#1b7658;--green-soft:#e7f3ed;--red:#a94d38;--red-soft:#fbede9;--nav:#202a26;--nav2:#2b3932;--shadow:0 12px 40px rgba(34,44,37,.06)}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 'DM Sans',sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}
+    .app{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:100vh}.sidebar{background:var(--nav);color:#f2f5ef;padding:25px 16px 20px;display:flex;flex-direction:column;min-height:100vh}.brand{padding:3px 10px 28px;display:flex;align-items:center;gap:11px}.brand-mark{width:34px;height:34px;border-radius:11px;background:#d8f174;color:#243326;display:grid;place-items:center;font:800 15px Manrope,sans-serif;letter-spacing:-1px}.brand-name{font:700 15px Manrope,sans-serif;letter-spacing:-.4px}.brand-sub{font-size:10px;color:#aeb8b1;letter-spacing:1.2px;text-transform:uppercase;margin-top:1px}.nav-label{font-size:10px;font-weight:700;color:#8f9b93;letter-spacing:1.4px;text-transform:uppercase;padding:0 11px;margin:8px 0 9px}.nav-item{display:flex;align-items:center;gap:12px;width:100%;padding:10px 11px;color:#c6d0c8;border:0;border-radius:9px;background:transparent;text-align:left;font-size:13px;margin-bottom:3px}.nav-item.active{background:var(--nav2);color:#f6f8f4}.nav-icon{font-size:16px;width:18px;text-align:center;opacity:.86}.side-bottom{margin-top:auto}.side-note{margin:22px 4px 15px;padding:14px;background:#2a3831;border:1px solid #39473f;border-radius:12px;color:#dce4dd}.side-note-head{font-size:10px;color:#9bad9f;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}.side-note strong{font:600 13px Manrope,sans-serif;display:block;margin-bottom:5px}.side-note p{font-size:11px;line-height:1.5;color:#b7c2ba;margin:0}.profile{border-top:1px solid #39443e;padding:17px 6px 0;display:flex;align-items:center;gap:10px}.avatar{width:30px;height:30px;border-radius:50%;background:#d4e8bb;color:#43513e;font-weight:700;display:grid;place-items:center;font-size:11px}.profile-name{font-weight:600;font-size:12px}.profile-meta{font-size:10px;color:#96a39a}.profile-status{margin-left:auto;width:7px;height:7px;background:#b9e675;border-radius:50%}
+    main{min-width:0;padding:0 38px 48px;max-width:1500px;width:100%;margin:0 auto}.topbar{height:74px;border-bottom:1px solid #e3e5de;display:flex;align-items:center;justify-content:space-between}.crumb{font-size:12px;color:#879088}.crumb b{font-weight:600;color:#3a443d}.top-right{display:flex;align-items:center;gap:19px}.market-open{display:flex;align-items:center;gap:7px;font-size:11px;color:#617068}.live-dot{width:6px;height:6px;background:#4ca979;border-radius:50%;box-shadow:0 0 0 3px #4ca97922}.score-pill{border:1px solid var(--line);border-radius:99px;padding:6px 11px;font-size:11px;color:#647068;background:#fff}.score-pill strong{font:500 12px 'DM Mono',monospace;color:#29352e;margin-left:4px}.user-dot{width:28px;height:28px;background:#eadfcf;border-radius:50%;display:grid;place-items:center;font:700 10px Manrope;color:#6f5940}
+    .page{max-width:1150px;margin:0 auto}.welcome{display:flex;justify-content:space-between;align-items:flex-end;padding:30px 0 22px}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:1.6px;color:#829087;font-weight:700;margin-bottom:6px}.welcome h1{font:700 27px/1.2 Manrope,sans-serif;letter-spacing:-1.1px;margin:0;color:#222b25}.welcome p{font-size:13px;color:#79837b;margin:7px 0 0}.round-chip{background:#e9e9df;border-radius:7px;padding:7px 10px;font:11px 'DM Mono',monospace;color:#6d766d;white-space:nowrap}.control-row{display:flex;align-items:center;justify-content:space-between;padding:0 0 17px;gap:12px}.mix-copy{font-size:11px;color:#738077;display:flex;align-items:center;gap:8px}.mix-dot{width:5px;height:5px;border-radius:50%;background:#9caf87}.new-round{border:0;background:#27352e;color:#f6f8f4;border-radius:7px;padding:9px 13px;font-size:11px;font-weight:600;box-shadow:0 2px 4px #17251c16}.new-round:hover{background:#34453b}.new-round span{font-size:14px;margin-right:5px;vertical-align:-1px}
+    .workspace{display:grid;grid-template-columns:minmax(0,1.32fr) minmax(315px,.88fr);gap:16px;align-items:start}.panel{background:#fff;border:1px solid #e6e8e1;border-radius:13px;box-shadow:var(--shadow)}.panel-head{padding:17px 19px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #edf0e9}.panel-title{font:700 13px Manrope,sans-serif;letter-spacing:-.2px}.panel-sub{font-size:10px;color:#879087;margin-top:2px}.book-badge{font-size:9px;color:#6d806f;background:#eef4ea;border-radius:5px;padding:4px 7px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;white-space:nowrap}.market-banner{margin:15px 17px 13px;background:#f7f8f3;border:1px solid #edf0e9;border-radius:9px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}.market-name{display:flex;align-items:center;gap:10px;min-width:0}.asset-icon{flex:0 0 31px;width:31px;height:31px;border-radius:9px;background:#e8ede1;color:#52624f;display:grid;place-items:center;font-size:16px}.asset-name{font-size:12px;font-weight:700;color:#29332d}.asset-desc{font-size:10px;color:#859087;margin-top:1px}.market-state{font:10px 'DM Mono',monospace;color:#6f796f;text-align:right}.table-wrap{padding:0 17px 14px;overflow-x:auto}.book-table{width:100%;border-collapse:collapse;min-width:470px}.book-table th{font-size:9px;text-transform:uppercase;letter-spacing:.9px;color:#929b93;font-weight:700;text-align:right;padding:0 8px 7px}.book-table th:first-child{text-align:left;padding-left:10px}.book-table td{border-top:1px solid #f0f1ec;padding:9px 8px;text-align:right;font:11px 'DM Mono',monospace;color:#37423a}.book-table td:first-child{text-align:left;font:600 11px 'DM Sans',sans-serif;color:#536057;padding-left:10px}.book-table td:nth-child(2),.book-table td:nth-child(5){font-size:10px;color:#8a958b}.quote{display:inline-block;min-width:48px;text-align:center;padding:4px 7px;border-radius:5px}.quote.bid{background:#eaf4ed;color:#24704e}.quote.ask{background:#f8efeb;color:#a44e39}.quote.combo{background:#f0f1e7;color:#596245}.row-tag{font:9px 'DM Sans',sans-serif;color:#9aa198;padding-left:4px;white-space:nowrap}.book-foot{margin:0 17px 16px;background:#fafbf8;border:1px solid #eff1eb;border-radius:8px;padding:10px 12px;display:flex;gap:9px;align-items:flex-start;color:#758078;font-size:10px;line-height:1.5}.info-icon{flex:0 0 15px;width:15px;height:15px;border:1px solid #c5cdc3;border-radius:50%;display:grid;place-items:center;font:500 10px 'DM Mono',monospace;color:#768277;margin-top:1px}.formula{font:10px 'DM Mono',monospace;color:#53624f;white-space:normal}
+    .right-col{display:grid;gap:14px}.decision{padding:18px 19px 17px}.step-label{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:#8a948b;font-weight:700}.decision h2{font:700 17px/1.28 Manrope,sans-serif;letter-spacing:-.5px;margin:7px 0 6px}.decision p{font-size:11px;color:#7c867e;margin:0 0 14px;line-height:1.5}.answer-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}.answer{border:1px solid #e1e5dd;border-radius:7px;background:#fff;color:#4c584f;padding:9px;font-size:11px;font-weight:600}.answer:hover:not(:disabled){border-color:#9fae9f;background:#fbfcf9}.answer.yes.selected{background:#edf6ee;border-color:#91bd9b;color:#286343}.answer.no.selected{background:#f4f4ef;border-color:#abb4a8;color:#485549}.answer:disabled{cursor:default;opacity:1}.feedback{display:none;margin-top:13px;border-radius:8px;padding:11px 12px;font-size:11px;line-height:1.5}.feedback.show{display:block}.feedback.good{background:#edf6ef;color:#335f42;border:1px solid #d9ebdc}.feedback.bad{background:#fbf0ed;color:#884b3c;border:1px solid #f1ddd6}.feedback-title{font-weight:700;margin-bottom:3px}.explain{color:#607067}.edge-line{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #d9e8db;padding-top:7px;margin-top:7px;font:10px 'DM Mono',monospace}.edge-line strong{font-weight:500;color:#286343}
+    .order-ticket{margin-top:16px;padding:17px 19px 16px}.ticket-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}.ticket-title{font:700 13px Manrope,sans-serif}.ticket-help{font-size:10px;color:#879188;margin-bottom:12px}.order-table-wrap{overflow-x:auto}.order-table{width:100%;border-collapse:collapse;min-width:650px}.order-table th{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:#929b93;font-weight:700;text-align:left;padding:0 9px 8px}.order-table td{border-top:1px solid #f0f1ec;padding:8px 9px;color:#536057;font-size:11px}.order-table td:first-child{font-weight:600;color:#344038}.order-quote{font:10px 'DM Mono',monospace;white-space:nowrap}.order-quote.bid{color:#24704e}.order-quote.ask{color:#a44e39}.order-side,.order-qty{border:1px solid #e0e4dc;border-radius:6px;background:#fff;color:#344038;padding:7px 8px;font:10px 'DM Mono',monospace;outline:none}.order-side{width:145px}.order-qty{width:86px}.order-side:focus,.order-qty:focus{border-color:#91a58e;box-shadow:0 0 0 2px #e7efe4}.order-qty.invalid{border-color:#ca7969;background:#fff7f4}.order-status{font-size:9px;color:#929b93;white-space:nowrap}.order-status.valid{color:#28704d}.order-status.invalid{color:#a94d38}.order-footer{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:12px}.order-footer-note{font-size:10px;color:#7a857c;line-height:1.45}.ticket-actions{display:flex;gap:7px;flex:0 0 auto}.ticket-action{border:1px solid #dfe4db;background:#f5f7f2;color:#354139;border-radius:7px;padding:8px 11px;font-size:10px;font-weight:700}.ticket-action.primary{background:#27352e;color:#f6f8f4;border-color:#27352e}.ticket-action:hover{filter:brightness(.97)}.order-validation{display:none;margin-top:10px;border-radius:7px;padding:9px 11px;font-size:10px;line-height:1.45}.order-validation.show{display:block}.order-validation.valid{background:#edf6ef;color:#276344;border:1px solid #d9ebdc}.order-validation.invalid{background:#fbf0ed;color:#884b3c;border:1px solid #f1ddd6}.order-validation.neutral{background:#f1f2ed;color:#606b61;border:1px solid #e5e7df}.order-validation.profit{background:#edf6ef;color:#276344;border:1px solid #d9ebdc}.order-validation.loss{background:#fbf0ed;color:#884b3c;border:1px solid #f1ddd6}.order-validation.flat{background:#f1f2ed;color:#606b61;border:1px solid #e5e7df}
+    .learning-row{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;margin-top:16px}.mini-panel{padding:14px 16px}.mini-title{display:flex;align-items:center;gap:8px;font:700 11px Manrope,sans-serif;margin-bottom:7px}.mini-symbol{display:grid;place-items:center;width:20px;height:20px;border-radius:6px;background:#eef1e9;color:#65735e;font-size:11px}.mini-panel p{font-size:10px;color:#7a857c;line-height:1.5;margin:0}.mini-math{margin-top:7px;font:10px 'DM Mono',monospace;color:#56624f;line-height:1.55}.mini-stats{display:flex;gap:22px;margin-top:9px}.stat-label{font-size:9px;color:#939c94;text-transform:uppercase;letter-spacing:.6px}.stat-value{font:500 11px 'DM Mono',monospace;color:#3c4940;margin-top:1px}.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;background:#27352e;color:#f5f8f3;border-radius:8px;padding:10px 14px;font-size:11px;box-shadow:0 7px 25px #17251c33;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:980px){.app{grid-template-columns:205px minmax(0,1fr)}main{padding:0 24px 40px}.workspace{grid-template-columns:minmax(0,1fr) minmax(280px,.82fr)}}@media(max-width:760px){.app{display:block}.sidebar{min-height:0;height:auto;padding:12px 16px;display:block}.brand{padding:0}.sidebar nav,.side-bottom{display:none}.topbar{height:55px}.top-right{gap:10px}.market-open{display:none}main{padding:0 16px 30px}.welcome{padding:22px 0 17px}.welcome h1{font-size:23px}.control-row{align-items:flex-start}.mix-copy{font-size:10px}.workspace{grid-template-columns:1fr}.right-col{grid-row:1}.learning-row{grid-template-columns:1fr}.panel-head{padding:14px 15px}.market-banner{margin:12px 13px}.table-wrap{padding:0 13px 12px}.book-foot{margin:0 13px 13px}.round-chip{font-size:9px}.order-footer{align-items:flex-start;flex-direction:column}.ticket-actions{width:100%}.ticket-action{flex:1}}@media(max-width:430px){.welcome{align-items:flex-start;gap:8px;flex-direction:column}.control-row{align-items:center}.mix-copy{max-width:65%;line-height:1.4}.decision,.order-ticket{padding-left:15px;padding-right:15px}}
+    .combo-equation{font:10px 'DM Mono',monospace;color:#53624f;line-height:1.4;margin-top:4px}
+    .competitive-panel{display:none;margin:0 0 16px;padding:15px 18px}.competitive-panel.show{display:block}.competition-top{display:flex;justify-content:space-between;align-items:center;gap:14px}.competition-kicker{font-size:9px;text-transform:uppercase;letter-spacing:1.1px;color:#7d897e;font-weight:700}.competition-player{font:700 16px Manrope,sans-serif;margin-top:3px}.competition-timer{font:700 21px 'DM Mono',monospace;color:#26352c}.competition-meta{font-size:10px;color:#7b867d;margin-top:3px}.room-code-badge{display:none;align-items:center;gap:7px;margin-top:8px;font-size:9px;color:#7a857c;letter-spacing:.6px}.room-code-badge.show{display:flex}.room-code-badge strong{font:700 14px 'DM Mono',monospace;color:#26352c;letter-spacing:2px}.room-code-copy{border:1px solid #dfe4db;background:#f5f7f2;border-radius:5px;padding:4px 7px;color:#536057;font-size:9px}.competition-board{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;margin-top:12px;padding-top:11px;border-top:1px solid #edf0e9}.leaderboard-title{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:#859087;font-weight:700}.leaderboard{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.leader-row{background:#f4f6f0;border:1px solid #e7ebe2;border-radius:7px;padding:5px 8px;font-size:10px;color:#566258}.leader-row.active{background:#eaf4ed;border-color:#b7d3bc;color:#286343}.leader-row strong{font:600 10px 'DM Mono',monospace;margin-left:5px}.competition-actions{margin-left:auto;display:flex;gap:7px}.competition-action{border:1px solid #dfe4db;background:#f5f7f2;color:#354139;border-radius:7px;padding:7px 10px;font-size:10px;font-weight:700}.competition-action.primary{background:#27352e;color:#f6f8f4;border-color:#27352e}.competition-action:disabled{opacity:.45;cursor:default}.competition-modal{position:fixed;inset:0;background:#17231dcc;z-index:10;display:none;place-items:center;padding:20px}.competition-modal.show{display:grid}.competition-dialog{width:min(460px,100%);background:#fff;border-radius:14px;padding:22px;box-shadow:0 25px 80px #10201655}.competition-dialog h2{font:700 20px Manrope,sans-serif;margin:0 0 5px}.competition-dialog p{font-size:11px;color:#78837a;margin:0 0 16px}.player-fields{display:grid;gap:8px;max-height:300px;overflow:auto}.player-field{display:grid;grid-template-columns:95px 1fr;gap:8px;align-items:center;font-size:10px;color:#778279}.player-field input{border:1px solid #e0e5dc;border-radius:7px;padding:9px 10px;outline:none}.player-field input:focus{border-color:#91a58e}.competition-dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}.competition-hint{font-size:10px;color:#78837a;margin-top:10px}.competition-dialog-status{display:none;margin-top:11px;padding:9px 10px;border-radius:7px;background:#fbf0ed;color:#884b3c;font-size:10px}.competition-dialog-status.show{display:block}
+    .winner-celebration{display:none;position:fixed;inset:0;z-index:30;place-items:center;overflow:hidden;pointer-events:none}.winner-celebration.show{display:grid}.winner-shade{position:absolute;inset:0;background:rgba(20,35,26,.24);animation:winner-shade-in .35s ease-out both}.winner-card{position:relative;z-index:1;width:min(410px,calc(100% - 36px));padding:27px 30px 25px;border:1px solid #e7eedc;border-radius:20px;background:linear-gradient(145deg,#fff 0%,#f7f9ef 100%);box-shadow:0 25px 80px #17251c44;text-align:center;animation:winner-pop .55s cubic-bezier(.2,.8,.2,1) both}.winner-trophy{display:block;font-size:48px;line-height:1;margin-bottom:9px;animation:trophy-bounce .75s .18s ease-in-out both}.winner-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:#728268}.winner-title{display:block;margin-top:4px;font:800 27px/1.15 Manrope,sans-serif;letter-spacing:-.8px;color:#24332a}.winner-score{margin-top:8px;font:500 13px 'DM Mono',monospace;color:#637064}.winner-confetti{position:absolute;inset:0;overflow:hidden}.winner-confetti i{position:absolute;top:-16px;left:var(--x);width:9px;height:13px;border-radius:2px;background:var(--color);opacity:0;animation:confetti-fall var(--duration) var(--delay) cubic-bezier(.15,.55,.35,1) forwards}.winner-confetti i:nth-child(3n){width:6px;height:6px;border-radius:50%}@keyframes winner-shade-in{from{opacity:0}to{opacity:1}}@keyframes winner-pop{0%{opacity:0;transform:translateY(20px) scale(.86)}65%{opacity:1;transform:translateY(-4px) scale(1.025)}100%{opacity:1;transform:translateY(0) scale(1)}}@keyframes trophy-bounce{0%{transform:scale(.65) rotate(-15deg)}55%{transform:scale(1.18) rotate(7deg)}100%{transform:scale(1) rotate(0)}}@keyframes confetti-fall{0%{opacity:0;transform:translate3d(0,-4vh,0) rotate(0)}8%{opacity:1}100%{opacity:0;transform:translate3d(var(--drift),108vh,0) rotate(760deg)}}@media(prefers-reduced-motion:reduce){.winner-celebration *{animation:none!important}.winner-confetti i{display:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">Q</div><div><div class="brand-name">The Quote Room</div><div class="brand-sub">Market practice</div></div></div>
+    <nav>
+      <div class="nav-label">Practice desk</div>
+      <div class="nav-item active"><span class="nav-icon">⌁</span> Random market</div>
+      <div class="nav-label" style="margin-top:24px">Market mix</div>
+      <div class="nav-item"><span class="nav-icon">◈</span> Synthetic spreads</div>
+      <div class="nav-item"><span class="nav-icon">▦</span> Fixed totals</div>
+      <div class="nav-item"><span class="nav-icon">⇄</span> Multi-leg baskets</div>
+    </nav>
+    <div class="side-bottom">
+      <div class="side-note"><div class="side-note-head">Trading note</div><strong>Price the hedge first</strong><p>Use the right side of every book, then check how much size is really there.</p></div>
+      <div class="profile"><div class="avatar">TR</div><div><div class="profile-name">Training account</div><div class="profile-meta">Paper trading · no risk</div></div><div class="profile-status"></div></div>
+    </div>
+  </aside>
+  <main>
+    <div class="topbar"><div class="crumb">Practice desk <span style="padding:0 6px;color:#bbc2b9">/</span> <b>Random market</b></div><div class="top-right"><div class="market-open"><span class="live-dot"></span> Simulated market open</div><div class="score-pill"><span id="score-label">SCORE</span><strong id="score">0 / 0</strong></div><div class="user-dot">TR</div></div></div>
+    <div class="page">
+      <section class="welcome"><div><div class="eyebrow">Market-making fundamentals · mixed book</div><h1>A fresh market. Every round.</h1><p>Read the prices and depth, spot a mispricing, then test the trade against what is actually available.</p></div><div class="round-chip" id="round-chip">ROUND 01 · RANDOM BOOK</div></section>
+      <div class="control-row"><div class="mix-copy"><span class="mix-dot"></span><span id="mix-copy">Market mix: synthetic spreads, fixed totals, and multi-leg baskets</span></div><div class="ticket-actions"><button class="ticket-action" id="competition-open">♜ Compete with friends</button><button class="new-round" id="next-round"><span>↻</span>New market</button></div></div>
+      <section class="panel competitive-panel" id="competitive-panel" aria-live="polite"><div class="competition-top"><div><div class="competition-kicker" id="competition-kicker">ONLINE MATCH · 1 MINUTE · SIMULTANEOUS PLAY</div><div class="competition-player" id="competition-player">Room lobby</div><div class="competition-meta" id="competition-meta">Create a room or join with a six-digit code.</div><div class="room-code-badge" id="room-code-badge">ROOM CODE <strong id="room-code-display">000000</strong><button class="room-code-copy" id="copy-room-code">Copy</button></div></div><div class="competition-timer" id="competition-timer">--:--</div></div><div class="competition-board"><span class="leaderboard-title" id="leaderboard-title">Players</span><div class="leaderboard" id="leaderboard"></div><div class="competition-actions"><button class="competition-action primary" id="start-room-match" hidden>Start match</button><button class="competition-action primary" id="restart-room-match" hidden>Play again</button><button class="competition-action" id="end-competition">Leave room</button></div></div></section>
+      <section class="workspace">
+        <article class="panel">
+          <div class="panel-head"><div><div class="panel-title">Live order book</div><div class="panel-sub">Top level only · quote size is executable units</div></div><div class="book-badge"><span class="live-dot" style="display:inline-block;margin-right:5px"></span> SIMULATED</div></div>
+          <div class="market-banner"><div class="market-name"><div class="asset-icon" id="main-icon">◈</div><div><div class="asset-name" id="main-name">Market</div><div class="asset-desc" id="main-desc">Synthetic contract and hedge instruments</div><div class="combo-equation" id="combo-equation">Combo contract = component relationship</div></div></div><div class="market-state" id="market-state">USD / unit</div></div>
+          <div class="table-wrap"><table class="book-table"><thead><tr><th>Instrument</th><th>Bid size</th><th>Bid</th><th>Offer</th><th>Offer size</th></tr></thead><tbody id="table-body"></tbody></table></div>
+          <div class="book-foot"><span class="info-icon">i</span><span id="book-note">Bid size is how much you can sell; offer size is how much you can buy. A hedge is only as large as its thinnest leg.</span></div>
+        </article>
+        <div class="right-col">
+          <article class="panel decision">
+            <div class="step-label">01 / Scan the market</div><h2 id="question-title">Is there a tradeable arbitrage?</h2><p id="question-copy">Compare the combo with its executable synthetic price or known payout bounds. Include displayed size when you trade.</p>
+            <div class="answer-buttons"><button class="answer yes" id="answer-yes">Yes, there is an edge</button><button class="answer no" id="answer-no">No, prices overlap</button></div>
+            <div class="feedback" id="feedback" aria-live="polite"></div>
+          </article>
+        </div>
+      </section>
+      <section class="panel order-ticket">
+        <div class="ticket-top"><div class="ticket-title">Deal ticket</div><div class="step-label">02 / Build your trade</div></div>
+        <div class="ticket-help">Choose a side and quantity for each instrument. Buys use offer depth; sells use bid depth. You can submit a full hedge, or trade only the combo when its known value bounds guarantee a profit. Competitive trades must use the maximum executable volume.</div>
+        <div class="order-table-wrap"><table class="order-table"><thead><tr><th>Instrument</th><th>Bid · size</th><th>Your action</th><th>Order quantity</th><th>Offer · size</th><th>Depth check</th></tr></thead><tbody id="order-rows"></tbody></table></div>
+        <div class="order-footer"><div class="order-footer-note">The ticket checks depth and calculates P&amp;L for either a complete hedge or a guaranteed combo-only trade.</div><div class="ticket-actions"><button class="ticket-action" id="clear-orders">Clear ticket</button><button class="ticket-action" id="no-trade" hidden>No arbitrage</button><button class="ticket-action primary" id="check-orders">Check trade &amp; calculate P&amp;L</button></div></div>
+        <div class="order-validation" id="order-validation" aria-live="polite"></div>
+      </section>
+      <section class="learning-row">
+        <article class="panel mini-panel"><div class="mini-title"><span class="mini-symbol">↗</span> Build the synthetic</div><p id="math-copy">Use the relationship and displayed quotes to work out the synthetic bid, offer, and available depth.</p><div class="mini-math" id="math-line">Calculate the executable synthetic from the displayed book.</div></article>
+        <article class="panel mini-panel"><div class="mini-title"><span class="mini-symbol">◌</span> Validate the trade</div><p>The ticket checks displayed depth. It accepts a fully offset hedge or a combo-only position when the known payout guarantees profit.</p><div class="mini-stats"><div><div class="stat-label">Round status</div><div class="stat-value" id="round-status">Not answered</div></div><div><div class="stat-label">Ticket status</div><div class="stat-value" id="ticket-status">Not checked</div></div></div></article>
+      </section>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast">New market generated</div>
+<div class="competition-modal" id="competition-modal" role="dialog" aria-modal="true" aria-labelledby="competition-dialog-title"><div class="competition-dialog"><h2 id="competition-dialog-title">Join a match</h2><p>Play live with friends from separate devices. The host sets the game length; everyone shares the same clock and plays at once.</p><label class="player-field">Action<select id="connection-mode" class="order-side" style="width:100%"><option value="create">Create a room</option><option value="join">Join a room</option></select></label><label class="player-field" style="margin-top:9px">Your name<input id="room-player-name" maxlength="20" value="Player" autocomplete="nickname"></label><label class="player-field" id="room-duration-row" style="margin-top:9px">Time limit (minutes)<input id="room-duration" type="number" inputmode="numeric" min="1" max="10" step="1" value="1"></label><label class="player-field" id="join-code-row" style="display:none;margin-top:9px">Six-digit code<input id="join-room-code" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="one-time-code"></label><div class="competition-hint">1–10 minutes · 2–6 players · +5 per correct scan and trade · wrong attempts freeze for 5 seconds. The host keeps the page open for the whole match.</div><div class="competition-dialog-status" id="competition-dialog-status" role="status"></div><div class="competition-dialog-actions"><button class="ticket-action" id="cancel-competition">Cancel</button><button class="ticket-action primary" id="start-competition">Create room</button></div></div></div>
+<div class="winner-celebration" id="winner-celebration" aria-live="assertive" aria-hidden="true"><div class="winner-shade"></div><div class="winner-card"><span class="winner-trophy" aria-hidden="true">🏆</span><span class="winner-eyebrow">Match complete</span><strong class="winner-title" id="winner-title">Player wins!</strong><div class="winner-score" id="winner-score">10 points</div></div><div class="winner-confetti" id="winner-confetti" aria-hidden="true"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.5/dist/peerjs.min.js"></script>
+<script>
+(() => {
+  const $ = (selector) => document.querySelector(selector);
+  const state = {round:1,score:0,answered:0,market:null,correct:null};
+  const competition = {active:false,players:[],deck:[],deckIndex:0,timeLeft:60,matchDurationSeconds:60,freezeLeft:0,timer:null,celebrationTimer:null,phase:'idle',roomPhase:'idle',matchEndsAt:0,freezeEndsAt:0,feedback:null,validation:null};
+  const network = {peer:null,isHost:false,roomActive:false,roomCode:'',myId:'',hostConn:null,connections:new Map(),closing:false,awaiting:false,connectTimer:null};
+  const randInt = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
+  const pick = (items) => items[Math.floor(Math.random()*items.length)];
+  const fmt = (value) => Number(value).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2});
+  const durationLabel = (seconds) => {const minutes=Math.round(seconds/60);return minutes+' minute'+(minutes===1?'':'s')};
+  const snap = (value,tick) => Math.round(value/tick)*tick;
+  const volume = (liquidity) => liquidity==='deep'?randInt(8,24):liquidity==='thin'?randInt(1,7):randInt(3,15);
+  const threeLegRelation = () => pick([[1,1,1],[1,1,0],[1,-1,0],[-1,1,0],[0,1,-1],[0,1,1],[1,0,-1],[1,-1,1],[1,1,-1],[2,1,-1],[1,2,-1],[1,-1,2],[3,1,0],[1,3,-1],[1,-1,3]]);
+  const totalAllocation = (total,count,minEach=1) => {
+    const result=Array(count).fill(minEach);
+    for(let i=count*minEach;i<total;i++) result[randInt(0,count-1)]++;
+    return result;
+  };
+  const signedExpression = (legs,terms) => {
+    const active=terms.map((term,index)=>({term,index})).filter(item=>item.term!==0);
+    const format=({term,index})=>(Math.abs(term)===1?'':Math.abs(term)+'× ')+legs[index].name;
+    const positive=active.filter(item=>item.term>0).map(format).join(' + ');
+    const negative=active.filter(item=>item.term<0).map(item=>' − '+format(item)).join('');
+    return positive?positive+negative:'−'+negative.slice(3);
+  };
+  function quoteLegs(specs,tick,liquidity){
+    return specs.map(spec=>{
+      const minimum=spec.minValue??0,maximum=spec.maxValue??Infinity;
+      const width=liquidity==='deep'?randInt(1,2):liquidity==='thin'?randInt(2,4):randInt(1,3);
+      const widthTicks=Number.isFinite(maximum)?Math.min(width,Math.max(1,Math.floor((maximum-minimum)/tick))):width;
+      const bid=Math.max(minimum,Math.min(maximum-tick,snap(spec.value-tick*widthTicks/2,tick)));
+      const ask=Math.max(bid+tick,Math.min(maximum,snap(bid+tick*widthTicks,tick)));
+      return {name:spec.name,bid,ask,bidSize:volume(liquidity),askSize:volume(liquidity)};
+    });
+  }
+  function expressionBounds(specs,terms){
+    let minimum=0,maximum=0;
+    specs.forEach((leg,index)=>{
+      const term=terms[index],low=leg.minValue??0,high=leg.maxValue??Infinity;
+      if(term>0){minimum+=term*low;maximum+=term*high}
+      else if(term<0){minimum+=term*high;maximum+=term*low}
+    });
+    return {minimum,maximum};
+  }
+  const roundUpToTick=(value,tick)=>Math.ceil((value-1e-9)/tick)*tick;
+  const roundDownToTick=(value,tick)=>Math.floor((value+1e-9)/tick)*tick;
+  function syntheticMarks(legs,terms){
+    let bid=0,ask=0,bidSize=Infinity,askSize=Infinity;
+    legs.forEach((leg,index)=>{
+      const term=terms[index],units=Math.abs(term);
+      if(term===0)return;
+      if(term>0){bid+=term*leg.bid;ask+=term*leg.ask;bidSize=Math.min(bidSize,Math.floor(leg.bidSize/units));askSize=Math.min(askSize,Math.floor(leg.askSize/units))}
+      else{bid+=term*leg.ask;ask+=term*leg.bid;bidSize=Math.min(bidSize,Math.floor(leg.askSize/units));askSize=Math.min(askSize,Math.floor(leg.bidSize/units))}
+    });
+    return {bid,ask,bidSize,askSize};
+  }
+  function makeSynthetic(spec){
+    const liquidity=pick(['deep','normal','normal','thin']);
+    const tick=spec.tick||0.5;
+    if(spec.terms.some(term=>Math.abs(term)>3))throw new Error('Basket weights cannot exceed 3.');
+    const bounds=expressionBounds(spec.legs,spec.terms);
+    const legs=quoteLegs(spec.legs,tick,liquidity);
+    const marks=syntheticMarks(legs,spec.terms);
+    const outcome=pick(['buy','sell','none','none','bound-high','bound-low']);
+    const edge=tick*randInt(1,4), comboSpread=tick*randInt(1,3);
+    let bid,ask;
+    if(outcome==='buy'){ask=snap(marks.bid-edge,tick);bid=snap(ask-comboSpread,tick)}
+    else if(outcome==='sell'){bid=snap(marks.ask+edge,tick);ask=snap(bid+comboSpread,tick)}
+    else if(outcome==='bound-high'){bid=roundUpToTick(Math.max(bounds.maximum+tick*2,marks.ask+tick),tick);ask=bid+comboSpread}
+    else if(outcome==='bound-low'){ask=roundDownToTick(Math.min(bounds.minimum-tick*2,marks.bid-tick),tick);bid=ask-comboSpread}
+    else{bid=snap(marks.bid-tick*randInt(1,2),tick);ask=snap(marks.ask+tick*randInt(1,2),tick)}
+    const combo={name:spec.comboName,bid,ask,bidSize:volume(liquidity),askSize:volume(liquidity)};
+    return assemble({...spec,legs,combo,liquidity,tick,outcome,terms:spec.terms,logicalBounds:bounds,exactTotal:null});
+  }
+  function makeFixed(spec){
+    const liquidity=pick(['deep','normal','normal','thin']);
+    const tick=spec.tick||1;
+    const counts=totalAllocation(spec.total,spec.legNames.length,spec.minEach||1);
+    const legs=quoteLegs(spec.legNames.map((name,i)=>({name,value:counts[i],minValue:0,maxValue:spec.total})),tick,liquidity);
+    const terms=Array(legs.length).fill(1);
+    const marks=syntheticMarks(legs,terms);
+    const outcome=pick(['buy','sell','none','none','bound-high','bound-low']);
+    const edge=tick*randInt(1,3),comboSpread=tick*randInt(1,2);
+    let bid,ask;
+    if(outcome==='buy'){ask=snap(marks.bid-edge,tick);bid=snap(ask-comboSpread,tick)}
+    else if(outcome==='sell'){bid=snap(marks.ask+edge,tick);ask=snap(bid+comboSpread,tick)}
+    else if(outcome==='bound-high'){bid=roundUpToTick(Math.max(spec.total+tick*2,marks.ask+tick),tick);ask=bid+comboSpread}
+    else if(outcome==='bound-low'){ask=roundDownToTick(Math.min(spec.total-tick*2,marks.bid-tick),tick);bid=ask-comboSpread}
+    else{bid=snap(spec.total-tick,tick);ask=snap(spec.total+tick,tick)}
+    const combo={name:spec.comboName,bid,ask,bidSize:volume(liquidity),askSize:volume(liquidity)};
+    return assemble({...spec,legs,combo,liquidity,tick,outcome,terms,exactTotal:spec.total});
+  }
+  function assemble(spec){
+    const marks=syntheticMarks(spec.legs,spec.terms);
+    const edgeBuy=marks.bid-spec.combo.ask;
+    const edgeSell=spec.combo.bid-marks.ask;
+    const buyCapacity=Math.min(marks.bidSize,spec.combo.askSize);
+    const sellCapacity=Math.min(marks.askSize,spec.combo.bidSize);
+    const buyable=edgeBuy>0&&buyCapacity>0;
+    const sellable=edgeSell>0&&sellCapacity>0;
+    const bounds=spec.exactTotal!==null?{minimum:spec.exactTotal,maximum:spec.exactTotal}:spec.logicalBounds;
+    const guaranteedBuy=Boolean(bounds&&Number.isFinite(bounds.minimum)&&spec.combo.ask<bounds.minimum&&spec.combo.askSize>0);
+    const guaranteedSell=Boolean(bounds&&Number.isFinite(bounds.maximum)&&spec.combo.bid>bounds.maximum&&spec.combo.bidSize>0);
+    return {...spec,expression:signedExpression(spec.legs,spec.terms),marks,edgeBuy,edgeSell,buyCapacity,sellCapacity,isArb:buyable||sellable||guaranteedBuy||guaranteedSell};
+  }
+  function generateMarket(){
+    const factories=[
+      ()=>makeSynthetic({family:'Film ratings',title:'Studio slate · critic scores',description:'Each film rating is from 0 to 10, so Film A + Film B + Film C cannot exceed 30. Check the displayed combo for quotes beyond its logical range.',icon:'◈',units:'rating points',tick:0.5,comboName:'Studio score package',legs:[{name:'Film A rating',value:randInt(4,9),minValue:0,maxValue:10},{name:'Film B rating',value:randInt(3,9),minValue:0,maxValue:10},{name:'Film C rating',value:randInt(2,8),minValue:0,maxValue:10}],terms:threeLegRelation()}),
+      ()=>makeSynthetic({family:'Collectibles',title:'Trading cards · graded values',description:'For this exercise each card value is between $0 and $100. Check weighted or signed baskets against those limits.',icon:'♢',units:'USD / card value',tick:0.5,comboName:'Card basket',legs:[{name:'Card A · rookie',value:randInt(12,35),minValue:0,maxValue:100},{name:'Card B · foil',value:randInt(7,26),minValue:0,maxValue:100},{name:'Card C · signed',value:randInt(18,42),minValue:0,maxValue:100}],terms:threeLegRelation()}),
+      ()=>makeSynthetic({family:'City temperatures',title:'Daily highs · three-city index',description:'Each city high is bounded from −40°F to 120°F. Use those limits to check the displayed temperature combination.',icon:'☼',units:'°F index points',tick:0.5,comboName:'City temperature index',legs:[{name:'City A · Harbor',value:randInt(48,88),minValue:-40,maxValue:120},{name:'City B · Uptown',value:randInt(45,86),minValue:-40,maxValue:120},{name:'City C · Midtown',value:randInt(50,90),minValue:-40,maxValue:120}],terms:threeLegRelation()}),
+      ()=>makeSynthetic({family:'Box office',title:'Opening weekend · theater markets',description:'Each theater estimate is between 0 and 100 points. Check the package or spread against those limits.',icon:'▤',units:'USD / estimate pt',tick:1,comboName:'Opening weekend spread',legs:[{name:'Theater A · Downtown',value:randInt(25,70),minValue:0,maxValue:100},{name:'Theater B · Suburban',value:randInt(18,62),minValue:0,maxValue:100},{name:'Theater C · Airport',value:randInt(15,58),minValue:0,maxValue:100}],terms:threeLegRelation()}),
+      ()=>makeSynthetic({family:'Population flows',title:'Commuter counts · route markets',description:'Each route count is between 0 and 500 people. Check signed or weighted spreads against those limits.',icon:'⇄',units:'people / count pt',tick:1,comboName:'Commuter flow spread',legs:[{name:'Route A · Eastbound',value:randInt(30,450),minValue:0,maxValue:500},{name:'Route B · Westbound',value:randInt(30,450),minValue:0,maxValue:500},{name:'Route C · Cross-town',value:randInt(30,450),minValue:0,maxValue:500}],terms:threeLegRelation()}),
+      ()=>{const total=randInt(30,500);return makeFixed({family:'Card suit counts',title:'Card table · '+total+'-person draw',description:'Every person belongs to exactly one suit; all four suit counts total '+total+'.',icon:'♧',units:'people',tick:0.5,total,minEach:2,comboName:'All suits total',legNames:['Hearts','Diamonds','Clubs','Spades']})},
+      ()=>{const total=randInt(100,500);return makeFixed({family:'District population',title:'City census · neighborhood split',description:'The four district counts partition a randomized population of '+total+' residents.',icon:'⌂',units:'residents',tick:1,total,minEach:12,comboName:'District total',legNames:['North district','East district','South district','West district']})},
+      ()=>{const total=randInt(100,500);return makeFixed({family:'Event attendance',title:'Festival crowd · attendance channels',description:'On-site, livestream, and watch-party counts sum to this randomized audience of '+total+'.',icon:'♫',units:'attendees',tick:1,total,minEach:10,comboName:'Total audience',legNames:['On site','Livestream','Watch parties']})},
+      ()=>{const total=randInt(50,500);return makeFixed({family:'Survey results',title:'Audience poll · response split',description:'The response groups add up to this randomized sample of '+total+'.',icon:'◎',units:'responses',tick:1,total,minEach:8,comboName:'Total responses',legNames:['Support','Oppose','Undecided']})}
+    ];
+    return pick(factories)();
+  }
+  function updateCompetitionControls(){
+    const playing=competition.active&&competition.roomPhase==='playing'&&competition.timeLeft>0&&['scan','trade'].includes(competition.phase);
+    const skipTrade=!competition.active&&state.correct===true&&state.market&&!state.market.isArb;
+    const frozen=competition.freezeLeft>0;
+    const scan=playing&&competition.phase==='scan'&&!frozen&&!network.awaiting;
+    const trading=playing&&competition.phase==='trade'&&!frozen&&!network.awaiting;
+    $('#answer-yes').disabled=competition.active?!scan:false;
+    $('#answer-no').disabled=competition.active?!scan:false;
+    $('#next-round').disabled=competition.active;
+    $('#competition-open').disabled=competition.active;
+    $('#no-trade').hidden=!trading;
+    $('#check-orders').disabled=competition.active?!trading:skipTrade;
+    $('#clear-orders').disabled=competition.active?!trading:skipTrade;
+    for(const control of $('#order-rows').querySelectorAll('select,input')){
+      const quantityDisabled=control.matches('.order-qty')&&control.closest('tr').querySelector('.order-side').value==='none';
+      control.disabled=competition.active?(!trading||quantityDisabled):quantityDisabled||skipTrade;
+    }
+    const enoughPlayers=competition.players.filter(player=>player.connected!==false).length>=2;
+    $('#start-room-match').hidden=!(competition.active&&competition.roomPhase==='lobby'&&network.isHost&&enoughPlayers);
+    $('#start-room-match').disabled=!(competition.active&&competition.roomPhase==='lobby'&&network.isHost&&enoughPlayers);
+    $('#restart-room-match').hidden=!(competition.active&&competition.roomPhase==='match-over'&&network.isHost&&enoughPlayers);
+    $('#restart-room-match').disabled=!(competition.active&&competition.roomPhase==='match-over'&&network.isHost&&enoughPlayers);
+  }
+  function updateCompetitionUI(){
+    const panel=$('#competitive-panel');
+    panel.classList.toggle('show',competition.active);
+    $('#room-code-badge').classList.toggle('show',competition.active&&!!network.roomCode);
+    $('#room-code-display').textContent=network.roomCode||'';
+    const lobby=competition.active&&competition.roomPhase==='lobby';
+    $('.workspace').style.display=lobby?'none':'';$('.order-ticket').style.display=lobby?'none':'';$('.learning-row').style.display=lobby?'none':'';
+    if(!competition.active){$('.workspace').style.display='';$('.order-ticket').style.display='';$('.learning-row').style.display='';$('#score-label').textContent='SCORE';$('#score').textContent=state.score+' / '+state.answered;$('#competition-kicker').textContent='ONLINE MATCH · 1 MINUTE';$('#no-trade').hidden=true;updateCompetitionControls();return}
+    const seconds=Math.max(0,competition.timeLeft);
+    $('#competition-timer').textContent=lobby?'--:--':Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0');
+    const myPlayer=competition.players.find(person=>person.id===network.myId);
+    $('#score-label').textContent='YOUR SCORE';
+    $('#score').textContent=String(myPlayer?.score||0);
+    const finished=competition.roomPhase==='match-over';
+    $('#competition-kicker').textContent=finished?'MATCH COMPLETE':'ONLINE MATCH · 1 MINUTE · SIMULTANEOUS PLAY';
+    $('#competition-player').textContent=lobby?'Room lobby':finished?'Final leaderboard':myPlayer?.name||'Match in progress';
+    if(lobby)$('#competition-meta').textContent=(network.isHost?'Share the code, then start the match':'Connected · waiting for the host to start')+' · '+competition.players.length+'/6 players · '+durationLabel(competition.matchDurationSeconds);
+    else if(finished){
+      const high=Math.max(...competition.players.map(person=>person.score));
+      const winners=competition.players.filter(person=>person.score===high).map(person=>person.name);
+      $('#competition-meta').textContent=(winners.length===1?winners[0]+' wins':winners.join(' & ')+' tie')+' with '+high+' points.'+(network.isHost?' Click Play again for another game.':' Waiting for the host to start another game.');
+    }else if(competition.phase==='scan')$('#competition-meta').textContent='Round '+String(state.round).padStart(2,'0')+' · Scan this market; everyone is playing at once.';
+    else if(competition.phase==='trade')$('#competition-meta').textContent='Round '+String(state.round).padStart(2,'0')+' · Build and submit your trade in step 2.';
+    else if(competition.phase==='settling')$('#competition-meta').textContent='Correct · +5 points · loading your next market';
+    else $('#competition-meta').textContent='Match running · keep finding profitable trades.';
+    const sorted=[...competition.players].sort((a,b)=>b.score-a.score||a.order-b.order);
+    $('#leaderboard-title').textContent=lobby?'Players':finished?'Final scores':'Live leaderboard';
+    $('#leaderboard').innerHTML=sorted.map((person,index)=>'<span class="leader-row '+(person.id===network.myId?'active':'')+'">'+(index+1)+'. '+escapeHtml(person.name)+(person.connected===false?' · offline':'')+'<strong>'+person.score+'</strong></span>').join('');
+    $('#end-competition').textContent=network.isHost?'Close room':'Leave room';
+    if(competition.feedback){const box=$('#feedback');box.className='feedback show '+competition.feedback.kind;box.innerHTML='<div class="feedback-title">'+escapeHtml(competition.feedback.title)+'</div><div class="explain">'+escapeHtml(competition.feedback.message)+'</div>'}
+    if(competition.validation){const box=$('#order-validation');box.className='order-validation show '+competition.validation.kind;box.textContent=competition.validation.message;$('#ticket-status').textContent=competition.validation.status}
+    updateCompetitionControls();
+  }
+  function escapeHtml(value){return String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]))}
+  function showRoomFeedback(kind,title,message){
+    competition.feedback={kind,title,message};
+    const box=$('#feedback');box.className='feedback show '+kind;
+    box.innerHTML='<div class="feedback-title">'+escapeHtml(title)+'</div><div class="explain">'+escapeHtml(message)+'</div>';
+  }
+  function showTicketMessage(kind,message,status){
+    competition.validation={kind,message,status};
+    const box=$('#order-validation');box.className='order-validation show '+kind;box.textContent=message;
+    $('#ticket-status').textContent=status;
+  }
+  function startFreeze(message){
+    competition.freezeEndsAt=Date.now()+5000;competition.freezeLeft=5;
+    showRoomFeedback('bad','Not quite.',message+' 5-second freeze. The match clock keeps running.');
+  }
+  function publicMarket(market){
+    const {isArb,edgeBuy,edgeSell,buyCapacity,sellCapacity,marks,outcome,logicalBounds,...visible}=market;
+    return visible;
+  }
+  function publicPlayers(){return competition.players.map(({id,name,score,order,connected})=>({id,name,score,order,connected}));}
+  function broadcastScoreboard(type='scoreboard'){
+    if(!network.isHost)return;
+    const timeLeft=competition.roomPhase==='playing'?Math.max(0,Math.ceil((competition.matchEndsAt-Date.now())/1000)):0;
+    const message={type,players:publicPlayers(),roomPhase:competition.roomPhase,timeLeft,remainingMs:Math.max(0,competition.matchEndsAt-Date.now()),durationSeconds:competition.matchDurationSeconds};
+    for(const connection of network.connections.values())if(connection.open)connection.send(message);
+    updateCompetitionUI();
+  }
+  function sendPlayerState(playerId){
+    if(!network.isHost)return;
+    const player=competition.players.find(person=>person.id===playerId);
+    if(!player)return;
+    const market=competition.deck[player.deckIndex];
+    const timeLeft=Math.max(0,Math.ceil((competition.matchEndsAt-Date.now())/1000));
+    const message={type:'player-state',playerId,players:publicPlayers(),roomPhase:competition.roomPhase,timeLeft,remainingMs:Math.max(0,competition.matchEndsAt-Date.now()),durationSeconds:competition.matchDurationSeconds,playerState:{phase:player.phase,deckIndex:player.deckIndex,round:player.deckIndex+1,market:market?publicMarket(market):null,freezeEndsAt:player.freezeEndsAt||0,feedback:player.feedback||null,validation:player.validation||null,correct:player.correct??null}};
+    if(playerId===network.myId)applyPlayerState(message);
+    else{const connection=network.connections.get(playerId);if(connection?.open)connection.send(message)}
+  }
+  function applyPlayerState(message){
+    if(message.playerId&&message.playerId!==network.myId)return;
+    const playerState=message.playerState||{};
+    const oldDeckIndex=competition.deckIndex,oldPhase=competition.phase,oldRoomPhase=competition.roomPhase;
+    if(message.players&&!network.isHost)competition.players=message.players;
+    competition.active=true;competition.roomPhase=message.roomPhase||'playing';
+    if(message.durationSeconds)competition.matchDurationSeconds=message.durationSeconds;
+    competition.timeLeft=message.timeLeft??competition.timeLeft;
+    if(!network.isHost)competition.matchEndsAt=Date.now()+(message.remainingMs??competition.timeLeft*1000);
+    competition.deckIndex=playerState.deckIndex??competition.deckIndex;
+    competition.phase=playerState.phase||competition.phase;
+    competition.freezeEndsAt=playerState.freezeEndsAt||0;
+    competition.freezeLeft=Math.max(0,Math.ceil((competition.freezeEndsAt-Date.now())/1000));
+    competition.feedback=playerState.feedback||null;competition.validation=playerState.validation||null;
+    if(message.roomCode)network.roomCode=message.roomCode;
+    if(playerState.round)state.round=playerState.round;
+    state.correct=playerState.correct??null;
+    if(playerState.market)state.market=playerState.market;
+    if(oldRoomPhase!=='playing'||oldDeckIndex!==competition.deckIndex||oldPhase==='idle'||!$('#order-rows').children.length)render();
+    if(competition.feedback)showRoomFeedback(competition.feedback.kind,competition.feedback.title,competition.feedback.message);
+    else{$('#feedback').className='feedback';$('#feedback').innerHTML=''}
+    if(competition.validation)showTicketMessage(competition.validation.kind,competition.validation.message,competition.validation.status);
+    else{$('#order-validation').className='order-validation';$('#order-validation').textContent='';$('#ticket-status').textContent='Not checked'}
+    network.awaiting=false;
+    startRoomClock();
+    updateCompetitionUI();
+  }
+  function sendRoomNotice(connection,type,message){if(connection?.open)connection.send({type,message})}
+  function sendLobbyState(connection){
+    const lobby={type:'lobby',roomCode:network.roomCode,players:publicPlayers(),roomPhase:competition.roomPhase,durationSeconds:competition.matchDurationSeconds};
+    if(connection?.open)connection.send(lobby);else for(const peerConnection of network.connections.values())if(peerConnection.open)peerConnection.send(lobby);
+  }
+  function attachHostConnection(connection){
+    connection.on('data',message=>{
+      if(!message||typeof message!=='object')return;
+      if(message.type==='join'){
+        if(competition.roomPhase!=='lobby'){sendRoomNotice(connection,'room-error','This match has already started. Ask the host to create a new room.');return}
+        if(competition.players.length>=6){sendRoomNotice(connection,'room-error','This room is full (6 players maximum).');return}
+        const player={id:connection.peer,name:String(message.name||'Player').trim().slice(0,20)||'Player',score:0,order:competition.players.length,connected:true};
+        network.connections.set(connection.peer,connection);competition.players.push(player);sendLobbyState();updateCompetitionUI();return;
+      }
+      if(message.type==='action')processRoomAction(connection.peer,message.action);
+      if(message.type==='leave'&&competition.roomPhase==='lobby'){
+        competition.players=competition.players.filter(player=>player.id!==connection.peer);network.connections.delete(connection.peer);sendLobbyState();updateCompetitionUI();
+      }
+    });
+    connection.on('close',()=>{
+      if(network.closing)return;
+      network.connections.delete(connection.peer);
+      const player=competition.players.find(person=>person.id===connection.peer);
+      if(player){
+        if(competition.roomPhase==='lobby')competition.players=competition.players.filter(person=>person.id!==connection.peer);
+        else player.connected=false;
+        if(competition.roomPhase==='lobby')sendLobbyState();else broadcastScoreboard();
+        updateCompetitionUI();
+      }
+    });
+    connection.on('error',()=>{});
+  }
+  function handleGuestMessage(message){
+    if(!message||typeof message!=='object')return;
+    if(message.type==='lobby'){
+      network.roomActive=true;
+      competition.active=true;competition.roomPhase='lobby';competition.phase='idle';competition.players=message.players||[];competition.matchDurationSeconds=message.durationSeconds||60;network.roomCode=message.roomCode||network.roomCode;
+      clearTimeout(network.connectTimer);$('#competition-modal').classList.remove('show');updateCompetitionUI();return;
+    }
+    if(message.type==='scoreboard'||message.type==='match-start'){
+      if(message.players)competition.players=message.players;
+      competition.roomPhase=message.roomPhase||competition.roomPhase;
+      if(message.durationSeconds)competition.matchDurationSeconds=message.durationSeconds;
+      if(message.timeLeft!==undefined){competition.timeLeft=message.timeLeft;competition.matchEndsAt=Date.now()+(message.remainingMs??message.timeLeft*1000)}
+      if(!competition.timer&&competition.roomPhase==='playing')startRoomClock();
+      updateCompetitionUI();return;
+    }
+    if(message.type==='player-state'){applyPlayerState(message);return}
+    if(message.type==='match-over'){
+      if(message.players)competition.players=message.players;
+      if(message.durationSeconds)competition.matchDurationSeconds=message.durationSeconds;
+      competition.roomPhase='match-over';competition.phase='idle';competition.timeLeft=0;
+      clearInterval(competition.timer);competition.timer=null;
+      updateCompetitionUI();showWinnerEffect(competition.players);return;
+    }
+    if(message.type==='room-error'||message.type==='room-closed'){
+      if(message.type==='room-error'){cleanupNetwork();roomError(message.message);$('#start-competition').textContent='Join room'}
+      else{cleanupNetwork();resetToPracticeMarket();$('#toast').textContent='The host closed the room';$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),1800)}
+    }
+  }
+  function roomError(message){
+    $('#competition-dialog-status').textContent=message;$('#competition-dialog-status').classList.add('show');
+    $('#start-competition').disabled=false;
+  }
+  function createRoom(name,durationSeconds){
+    if(typeof window.Peer!=='function'){roomError('The multiplayer connection library did not load. Check your connection and reload the page.');return}
+    $('#start-competition').disabled=true;$('#start-competition').textContent='Creating room…';
+    competition.matchDurationSeconds=durationSeconds;
+    let attempts=0;
+    const attempt=()=>{
+      attempts++;const code=String(randInt(0,999999)).padStart(6,'0');
+      const peer=new window.Peer('qroom-'+code);network.peer=peer;network.isHost=true;network.closing=false;
+      peer.on('open',id=>{
+        clearTimeout(network.connectTimer);
+        network.roomActive=true;network.myId=id;network.roomCode=code;
+        competition.active=true;competition.roomPhase='lobby';competition.phase='idle';competition.players=[{id,name,score:0,order:0,connected:true}];
+        peer.on('connection',connection=>attachHostConnection(connection));
+        $('#competition-modal').classList.remove('show');$('#start-competition').disabled=false;$('#start-competition').textContent='Create room';
+        updateCompetitionUI();
+      });
+      peer.on('error',error=>{
+        if(network.peer!==peer)return;
+        if(network.roomActive){$('#toast').textContent='Room connection issue · '+error.type;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2200);return}
+        if(error.type==='unavailable-id'&&attempts<5){peer.destroy();attempt();return}
+        roomError(error.type==='unavailable-id'?'Could not reserve a room code. Try again.':'Could not connect to the room service. Check your internet connection and try again.');
+        peer.destroy();network.peer=null;network.isHost=false;
+      });
+    };
+    network.connectTimer=setTimeout(()=>{if(!competition.active){cleanupNetwork();roomError('Room setup timed out. Check your connection and try again.');$('#start-competition').textContent='Create room';$('#start-competition').disabled=false}},12000);
+    attempt();
+  }
+  function joinRoom(code,name){
+    if(typeof window.Peer!=='function'){roomError('The multiplayer connection library did not load. Check your connection and reload the page.');return}
+    $('#start-competition').disabled=true;$('#start-competition').textContent='Connecting…';
+    network.isHost=false;network.roomCode=code;network.closing=false;
+    const peer=new window.Peer();network.peer=peer;
+    peer.on('open',id=>{
+      network.myId=id;
+      const connection=peer.connect('qroom-'+code,{reliable:true,serialization:'json'});network.hostConn=connection;
+      connection.on('open',()=>connection.send({type:'join',name}));
+      connection.on('data',handleGuestMessage);
+      connection.on('error',()=>{if(network.hostConn!==connection)return;cleanupNetwork();roomError('Connection failed. Check the six-digit code and try again.');$('#start-competition').textContent='Join room'});
+      connection.on('close',()=>{if(network.roomActive&&!network.closing){cleanupNetwork();resetToPracticeMarket();$('#toast').textContent='Disconnected from the room';$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),1800)}});
+    });
+    peer.on('error',error=>{if(network.peer!==peer)return;cleanupNetwork();roomError(error.type==='peer-unavailable'?'No room was found for that code. Ask the host to keep the room open.':'Could not connect to the room service. Check your internet connection.');$('#start-competition').textContent='Join room'});
+    network.connectTimer=setTimeout(()=>{if(competition.roomPhase!=='lobby'){cleanupNetwork();roomError('No response yet. Confirm the code and make sure the host is online.');$('#start-competition').textContent='Join room';$('#start-competition').disabled=false}},12000);
+  }
+  function cleanupNetwork(){
+    network.closing=true;clearInterval(competition.timer);competition.timer=null;clearTimeout(network.connectTimer);
+    for(const connection of network.connections.values())connection.close();network.connections.clear();
+    if(network.hostConn){network.hostConn.close();network.hostConn=null}
+    if(network.peer){network.peer.destroy();network.peer=null}
+    network.roomActive=false;network.isHost=false;network.roomCode='';network.myId='';network.awaiting=false;
+  }
+  function resetToPracticeMarket(){
+    hideWinnerCelebration();
+    competition.active=false;competition.phase='idle';competition.roomPhase='idle';competition.players=[];competition.deck=[];competition.deckIndex=0;competition.timeLeft=60;competition.matchEndsAt=0;competition.feedback=null;competition.validation=null;competition.freezeLeft=0;competition.freezeEndsAt=0;
+    state.round=1;state.market=generateMarket();state.correct=null;render();
+  }
+  function closeRoom(){
+    if(network.isHost){for(const connection of network.connections.values())if(connection.open)connection.send({type:'room-closed'});}
+    else if(network.hostConn?.open)network.hostConn.send({type:'leave'});
+    cleanupNetwork();resetToPracticeMarket();
+  }
+  function startRoomMatch(){
+    if(!network.isHost||!['lobby','match-over'].includes(competition.roomPhase)||competition.players.filter(player=>player.connected!==false).length<2)return;
+    hideWinnerCelebration();
+    competition.players=competition.players.filter(player=>player.connected!==false).map((player,order)=>({...player,score:0,order,connected:true,deckIndex:0,phase:'scan',freezeEndsAt:0,feedback:null,validation:null,correct:null}));
+    competition.deck=Array.from({length:100},()=>generateMarket());competition.active=true;competition.roomPhase='playing';competition.phase='scan';competition.deckIndex=0;competition.matchEndsAt=Date.now()+competition.matchDurationSeconds*1000;competition.timeLeft=competition.matchDurationSeconds;competition.freezeLeft=0;competition.freezeEndsAt=0;competition.feedback=null;competition.validation=null;network.awaiting=false;
+    $('#competition-modal').classList.remove('show');
+    state.round=1;state.correct=null;state.market=competition.deck[0];render();startRoomClock();
+    broadcastScoreboard('match-start');
+    for(const player of competition.players)sendPlayerState(player.id);
+  }
+  function startRoomClock(){if(!competition.timer)competition.timer=setInterval(competitionTick,1000)}
+  function competitionTick(){
+    if(!competition.active||competition.roomPhase!=='playing')return;
+    competition.timeLeft=Math.max(0,Math.ceil((competition.matchEndsAt-Date.now())/1000));
+    const myPlayer=competition.players.find(person=>person.id===network.myId);
+    const wasFrozen=competition.freezeLeft>0;
+    const freezeDeadline=myPlayer?.freezeEndsAt||competition.freezeEndsAt;
+    competition.freezeLeft=Math.max(0,Math.ceil((freezeDeadline-Date.now())/1000));
+    if(wasFrozen&&competition.freezeLeft===0){competition.validation=null;if(competition.feedback)competition.feedback={...competition.feedback,message:'Freeze complete. You can try again.'};}
+    updateCompetitionUI();
+    if(network.isHost){if(competition.timeLeft===0)finishMatch();else broadcastScoreboard()}
+  }
+  function finishMatch(){
+    if(!network.isHost||competition.roomPhase!=='playing')return;
+    competition.roomPhase='match-over';competition.phase='idle';competition.timeLeft=0;competition.freezeLeft=0;
+    clearInterval(competition.timer);competition.timer=null;
+    updateCompetitionUI();
+    const message={type:'match-over',players:publicPlayers(),roomPhase:'match-over',timeLeft:0,durationSeconds:competition.matchDurationSeconds};
+    showWinnerEffect(competition.players);
+    for(const connection of network.connections.values())if(connection.open)connection.send(message);
+  }
+  function showWinnerEffect(players){
+    const roster=players||competition.players;
+    if(!roster.length)return;
+    const high=Math.max(...roster.map(player=>player.score));
+    const winners=roster.filter(player=>player.score===high).map(player=>player.name);
+    $('#winner-title').textContent=winners.length===1?winners[0]+' wins!':"It's a tie!";
+    $('#winner-score').textContent=high+' point'+(high===1?'':'s');
+    const confetti=$('#winner-confetti'),colors=['#d8f174','#69b98b','#f0a65a','#91a7ef','#e87979','#dba6e8'];
+    confetti.innerHTML='';
+    for(let index=0;index<54;index++){
+      const piece=document.createElement('i');
+      piece.style.setProperty('--x',randInt(0,100)+'%');
+      piece.style.setProperty('--drift',randInt(-115,115)+'px');
+      piece.style.setProperty('--duration',(3+Math.random()*1.7)+'s');
+      piece.style.setProperty('--delay',(Math.random()*.75)+'s');
+      piece.style.setProperty('--color',colors[index%colors.length]);
+      confetti.appendChild(piece);
+    }
+    const overlay=$('#winner-celebration');
+    clearTimeout(competition.celebrationTimer);
+    overlay.classList.remove('show');overlay.setAttribute('aria-hidden','false');
+    void overlay.offsetWidth;
+    overlay.classList.add('show');
+    competition.celebrationTimer=setTimeout(()=>{overlay.classList.remove('show');overlay.setAttribute('aria-hidden','true');confetti.innerHTML=''},4700);
+  }
+  function hideWinnerCelebration(){
+    clearTimeout(competition.celebrationTimer);competition.celebrationTimer=null;
+    const overlay=$('#winner-celebration');
+    if(overlay){overlay.classList.remove('show');overlay.setAttribute('aria-hidden','true')}
+  }
+  function advancePlayerRound(playerId){
+    if(!network.isHost||competition.roomPhase!=='playing')return;
+    const player=competition.players.find(person=>person.id===playerId);
+    if(!player||player.phase!=='settling')return;
+    player.deckIndex++;
+    if(player.deckIndex>=competition.deck.length)competition.deck.push(generateMarket());
+    player.phase='scan';player.freezeEndsAt=0;player.feedback=null;player.validation=null;player.correct=null;
+    sendPlayerState(playerId);broadcastScoreboard();
+  }
+  function maximumComboVolume(market,comboSide){
+    const combo=market.combo;
+    let maximum=comboSide==='buy'?combo.askSize:combo.bidSize;
+    const comboPosition=comboSide==='buy'?1:-1;
+    market.legs.forEach((leg,index)=>{
+      const term=market.terms[index];
+      if(term===0)return;
+      const hedgePosition=-comboPosition*term;
+      const side=hedgePosition>0?'buy':'sell';
+      const available=side==='buy'?leg.askSize:leg.bidSize;
+      maximum=Math.min(maximum,Math.floor(available/Math.abs(term)));
+    });
+    return Math.max(0,maximum);
+  }
+  function maximumVolumeMessage(){return 'You need to check the volume again.'}
+  function evaluateComboOnlyTrade(market,comboOrder){
+    const bounds=market.exactTotal!==null?{minimum:market.exactTotal,maximum:market.exactTotal}:market.logicalBounds;
+    if(!bounds||!Number.isFinite(bounds.minimum)||!Number.isFinite(bounds.maximum))return {valid:false,message:'A combo-only trade is not guaranteed profitable here. Build the full hedge.'};
+    const guaranteedPerUnit=comboOrder.side==='buy'?bounds.minimum-comboOrder.price:comboOrder.price-bounds.maximum;
+    if(guaranteedPerUnit<=0)return {valid:false,message:'A combo-only trade is not guaranteed profitable here. Build the full hedge.'};
+    const maximumVolume=comboOrder.side==='buy'?market.combo.askSize:market.combo.bidSize;
+    const pnl=guaranteedPerUnit*comboOrder.quantity;
+    const atMaxVolume=comboOrder.quantity===maximumVolume;
+    return {valid:true,pnl,atMaxVolume,maximumVolume,volumeMessage:atMaxVolume?'':maximumVolumeMessage(),message:'Combo-only trade · guaranteed P&L: +$'+fmt(pnl)+' before fees.'};
+  }
+  function evaluateRoomTrade(market,draft){
+    const rows=Array.isArray(draft)?draft:[];let selected=false;
+    const orders=[];
+    for(let index=0;index<market.legs.length+1;index++){
+      const item=rows[index]||{side:'none',quantity:0};if(!['none','buy','sell'].includes(item.side))return {valid:false,message:'Choose valid buy or sell actions for the ticket.'};
+      if(item.side==='none')continue;selected=true;
+      const quantity=Number(item.quantity),instrument=[...market.legs,market.combo][index],available=item.side==='buy'?instrument.askSize:instrument.bidSize;
+      if(!Number.isInteger(quantity)||quantity<1||quantity>available)return {valid:false,message:'One or more quantities exceed the displayed bid or offer size.'};
+      orders.push({index,side:item.side,quantity,price:item.side==='buy'?instrument.ask:instrument.bid});
+    }
+    if(!selected)return {valid:false,message:'Choose at least one order, or select No arbitrage.'};
+    const comboIndex=market.legs.length,combo=orders.find(order=>order.index===comboIndex);
+    if(combo&&orders.length===1)return evaluateComboOnlyTrade(market,combo);
+    const comboPosition=combo?(combo.side==='buy'?combo.quantity:-combo.quantity):0;
+    const balanced=comboPosition!==0&&market.legs.every((_,index)=>{
+      const leg=orders.find(order=>order.index===index),position=leg?(leg.side==='buy'?leg.quantity:-leg.quantity):0;
+      return position+comboPosition*market.terms[index]===0;
+    });
+    if(!balanced)return {valid:false,message:'The order sizes do not fully hedge the combo relationship.'};
+    const maximumVolume=maximumComboVolume(market,combo.side),atMaxVolume=combo.quantity===maximumVolume;
+    const volumeMessage=atMaxVolume?'':maximumVolumeMessage(market,maximumVolume);
+    const pnl=orders.reduce((sum,order)=>sum+(order.side==='sell'?1:-1)*order.price*order.quantity,0);
+    return {valid:true,pnl,atMaxVolume,maximumVolume,volumeMessage,message:'Complete hedge · locked-in P&L: '+(pnl>0?'+':'')+'$'+fmt(pnl)+' before fees.'};
+  }
+  function processRoomAction(playerId,action){
+    const player=competition.players.find(person=>person.id===playerId);
+    if(!network.isHost||!network.roomActive||competition.roomPhase!=='playing'||!player||player.connected===false)return;
+    const market=competition.deck[player.deckIndex];
+    if(!market)return;
+    const frozen=Math.max(0,Math.ceil(((player.freezeEndsAt||0)-Date.now())/1000));
+    if(frozen>0||Date.now()>=competition.matchEndsAt){sendPlayerState(playerId);return}
+    if(action?.kind==='scan'&&player.phase==='scan'){
+      const correct=Boolean(action.choice)===market.isArb;
+      if(correct){
+        player.score+=5;player.correct=true;player.validation=null;
+        if(!market.isArb){
+          player.score+=5;player.phase='settling';player.feedback={kind:'good',title:'Correct. Step 2 complete · +5 points.',message:'There is no arbitrage to trade, so step 2 counts as correct automatically.'};
+          player.validation={kind:'valid',message:'No arbitrage · step 2 complete automatically · +5 points.',status:'Correct · +5 points'};
+        }else{player.phase='trade';player.feedback={kind:'good',title:'Correct. +5 points.',message:'Build your trade in step 2. You choose the sides and quantities.'};}
+      }
+      else{player.correct=false;player.feedback={kind:'bad',title:'Not quite.',message:'5-second freeze. The match clock keeps running.'};player.freezeEndsAt=Date.now()+5000;}
+      sendPlayerState(playerId);broadcastScoreboard();
+      if(player.phase==='settling')setTimeout(()=>advancePlayerRound(playerId),650);
+      return;
+    }
+    if(action?.kind==='no-trade'&&player.phase==='trade'){
+      if(!market.isArb){player.score+=5;player.phase='settling';player.feedback={kind:'good',title:'Correct. +5 points.',message:'There is no tradeable arbitrage in this market.'};player.validation={kind:'valid',message:'Correct: no tradeable arbitrage. +5 points.',status:'Correct · +5 points'};}
+      else{player.feedback={kind:'bad',title:'Not quite.',message:'5-second freeze. The match clock keeps running.'};player.freezeEndsAt=Date.now()+5000;player.validation={kind:'invalid',message:'This market has a tradeable arbitrage. Submit a guaranteed combo-only trade or a complete profitable hedge.',status:'Incorrect · 5-second freeze'};}
+      sendPlayerState(playerId);broadcastScoreboard();
+      if(player.phase==='settling')setTimeout(()=>advancePlayerRound(playerId),650);
+      return;
+    }
+    if(action?.kind==='trade'&&player.phase==='trade'){
+      const result=evaluateRoomTrade(market,action.orders);
+      if(result.valid&&result.pnl>0&&result.atMaxVolume){
+        player.score+=5;player.phase='settling';player.feedback={kind:'good',title:'Correct trade. +5 points.',message:result.message};
+        player.validation={kind:'profit',message:result.message+' Correct trade · +5 points.',status:'Correct · +5 points'};
+      }else{
+        const belowMaximum=result.valid&&!result.atMaxVolume;
+        player.feedback={kind:'bad',title:'Not quite.',message:belowMaximum?'You need to check the volume again. 5-second freeze.':result.message||'The trade must lock in a positive P&L. 5-second freeze.'};
+        if((result.valid&&!belowMaximum)||!result.valid)player.feedback.message+=' 5-second freeze.';
+        player.freezeEndsAt=Date.now()+5000;
+        const validationMessage=result.valid?(belowMaximum?result.volumeMessage:result.message):result.message;
+        player.validation={kind:result.valid?'loss':'invalid',message:validationMessage,status:'Incorrect · 5-second freeze'};
+      }
+      sendPlayerState(playerId);broadcastScoreboard();
+      if(player.phase==='settling')setTimeout(()=>advancePlayerRound(playerId),650);
+      return;
+    }
+    sendPlayerState(playerId);
+  }
+  function sendRoomAction(action){
+    if(!network.roomActive)return false;
+    const player=competition.players.find(person=>person.id===network.myId);
+    competition.freezeLeft=Math.max(0,Math.ceil((competition.freezeEndsAt-Date.now())/1000));
+    if(competition.roomPhase!=='playing'||competition.timeLeft<=0||!player||!['scan','trade'].includes(competition.phase)||competition.freezeLeft>0||network.awaiting)return false;
+    if(network.isHost){processRoomAction(network.myId,action);return true}
+    if(!network.hostConn?.open)return false;
+    network.awaiting=true;$('#competition-meta').textContent='Submitting your answer to the room host…';updateCompetitionControls();
+    network.hostConn.send({type:'action',action});return true;
+  }
+  function startFreeze(message){
+    competition.freezeEndsAt=Date.now()+5000;competition.freezeLeft=5;
+    updateCompetitionUI();
+  }
+  function awardCompetitionPoints(){
+    const player=competition.players.find(person=>person.id===network.myId);
+    if(player)player.score+=5;
+    updateCompetitionUI();
+  }
+  function advanceCompetitionRound(){
+    state.round++;state.market=generateMarket();state.correct=null;competition.deckIndex=state.round-1;competition.phase='scan';competition.freezeEndsAt=0;competition.freezeLeft=0;competition.feedback=null;competition.validation=null;
+    render();
+  }
+  function submitNoTrade(){
+    if(network.roomActive){sendRoomAction({kind:'no-trade'});return}
+    if(!competition.active||competition.phase!=='trade'||competition.freezeLeft>0)return;
+    const result=$('#order-validation');
+    if(!state.market.isArb){
+      result.className='order-validation show valid';result.textContent='Correct: no tradeable arbitrage. +5 points.';
+      $('#ticket-status').textContent='Correct · +5 points';competition.phase='settling';awardCompetitionPoints();updateCompetitionUI();
+      setTimeout(()=>{if(competition.active&&competition.phase==='settling')advanceCompetitionRound()},650);
+    }else{
+      result.className='order-validation show invalid';result.textContent='Not quite. Submit a guaranteed combo-only trade or a complete profitable hedge.';
+      $('#ticket-status').textContent='Incorrect · 5-second freeze';startFreeze('Incorrect trade');
+    }
+  }
+  function openCompetitionSetup(){
+    $('#competition-dialog-status').classList.remove('show');$('#competition-dialog-status').textContent='';
+    $('#start-competition').disabled=false;$('#start-competition').textContent=$('#connection-mode').value==='create'?'Create room':'Join room';
+    $('#join-code-row').style.display=$('#connection-mode').value==='join'?'grid':'none';
+    $('#room-duration-row').style.display=$('#connection-mode').value==='create'?'grid':'none';
+    $('#competition-modal').classList.add('show');
+    setTimeout(()=>$('#room-player-name').focus(),0);
+  }
+  function createOrJoinRoom(){
+    const name=$('#room-player-name').value.trim().slice(0,20)||'Player';
+    if($('#connection-mode').value==='create'){
+      const minutes=Number($('#room-duration').value);
+      if(!Number.isInteger(minutes)||minutes<1||minutes>10){roomError('Choose a whole-number time limit from 1 to 10 minutes.');return}
+      createRoom(name,minutes*60);return;
+    }
+    const code=$('#join-room-code').value.replace(/\D/g,'');
+    if(!/^\d{6}$/.test(code)){roomError('Enter the six-digit room code.');return}
+    joinRoom(code,name);
+  }
+  function orderInstrument(index){return [...state.market.legs,state.market.combo][index]}
+  function clearOrderResult(){
+    $('#order-validation').className='order-validation';
+    $('#order-validation').textContent='';
+    $('#ticket-status').textContent='Pending review';
+  }
+  function markOrderReady(row){
+    const select=row.querySelector('.order-side'),quantity=row.querySelector('.order-qty'),index=Number(row.dataset.index);
+    const instrument=orderInstrument(index),side=select.value;
+    const limit=side==='buy'?instrument.askSize:side==='sell'?instrument.bidSize:0;
+    quantity.max=limit;
+    if(side==='none'){quantity.value=0;quantity.disabled=true}
+    else{quantity.disabled=false;if(Number(quantity.value)<1)quantity.value=1}
+    const status=row.querySelector('.order-status');
+    status.textContent=side==='none'?'—':'Ready to check';status.className='order-status';
+    quantity.classList.remove('invalid');
+    clearOrderResult();
+  }
+  function clearOrders(){
+    for(const row of $('#order-rows').querySelectorAll('tr')){
+      row.querySelector('.order-side').value='none';
+      row.querySelector('.order-qty').value=0;row.querySelector('.order-qty').disabled=true;row.querySelector('.order-qty').classList.remove('invalid');
+      const status=row.querySelector('.order-status');status.textContent='—';status.className='order-status';
+    }
+    $('#order-validation').className='order-validation';$('#order-validation').textContent='';$('#ticket-status').textContent='Not checked';
+  }
+  function render(){
+    const market=state.market;
+    $('#main-icon').textContent=market.icon;
+    $('#main-name').textContent=market.title;
+    $('#main-desc').textContent=market.description;
+    $('#combo-equation').textContent='COMBO · '+market.combo.name+' = '+market.expression+(market.exactTotal!==null?' = '+fmt(market.exactTotal):'');
+    $('#market-state').textContent=market.units;
+    $('#table-body').innerHTML=[...market.legs,market.combo].map((instrument,index)=>{
+      const isCombo=index===market.legs.length;
+      return '<tr><td>'+instrument.name+(isCombo?'<span class="row-tag">combo</span>':'')+'</td><td>'+instrument.bidSize+'</td><td><span class="quote '+(isCombo?'combo':'bid')+'">'+fmt(instrument.bid)+'</span></td><td><span class="quote '+(isCombo?'combo':'ask')+'">'+fmt(instrument.ask)+'</span></td><td>'+instrument.askSize+'</td></tr>';
+    }).join('');
+    $('#order-rows').innerHTML=[...market.legs,market.combo].map((instrument,index)=>{
+      const isCombo=index===market.legs.length;
+      return '<tr data-index="'+index+'"><td>'+instrument.name+(isCombo?'<span class="row-tag">combo</span>':'')+'</td><td><span class="order-quote bid">$'+fmt(instrument.bid)+' · '+instrument.bidSize+'</span></td><td><select class="order-side" aria-label="Action for '+instrument.name+'"><option value="none">No order</option><option value="buy">Buy at offer</option><option value="sell">Sell at bid</option></select></td><td><input class="order-qty" type="number" min="0" max="0" step="1" value="0" aria-label="Order quantity for '+instrument.name+'" disabled></td><td><span class="order-quote ask">$'+fmt(instrument.ask)+' · '+instrument.askSize+'</span></td><td class="order-status">—</td></tr>';
+    }).join('');
+    $('#round-chip').textContent='ROUND '+String(state.round).padStart(2,'0')+(competition.active?' · COMPETITION':' · RANDOM BOOK');
+    $('#answer-yes').disabled=false;$('#answer-no').disabled=false;
+    $('#answer-yes').classList.remove('selected');$('#answer-no').classList.remove('selected');
+    $('#feedback').className='feedback';$('#feedback').innerHTML='';
+    $('#round-status').textContent='Not answered';$('#ticket-status').textContent='Not checked';
+    $('#math-line').textContent='Combo payoff: '+market.combo.name+' = '+market.expression+(market.exactTotal!==null?' = '+fmt(market.exactTotal)+' '+market.units:'')+'. Use displayed quotes to work out your executable prices.';
+    clearOrders();
+    $('#score').textContent=state.score+' / '+state.answered;
+    updateCompetitionUI();
+  }
+  function reveal(choice){
+    const market=state.market,isCorrect=choice===market.isArb;
+    if(network.roomActive){sendRoomAction({kind:'scan',choice});return}
+    if(competition.active){
+      if(competition.phase!=='scan'||competition.freezeLeft>0)return;
+      $('#answer-yes').classList.toggle('selected',choice);$('#answer-no').classList.toggle('selected',!choice);
+      const f=$('#feedback');f.className='feedback show '+(isCorrect?'good':'bad');
+      if(isCorrect){
+        state.correct=true;
+        if(!market.isArb){
+          competition.phase='settling';competition.feedback={kind:'good',title:'Correct. Step 2 complete · +5 points.',message:'There is no arbitrage to trade, so step 2 counts as correct automatically.'};
+          competition.validation={kind:'valid',message:'No arbitrage · step 2 complete automatically · +5 points.',status:'Correct · +5 points'};
+          $('#round-status').textContent='Correct · step 2 complete';
+          awardCompetitionPoints();awardCompetitionPoints();
+          setTimeout(()=>{if(competition.active&&competition.phase==='settling')advanceCompetitionRound()},650);
+        }else{
+          competition.phase='trade';$('#round-status').textContent='Correct · +5 points';
+          f.innerHTML='<div class="feedback-title">Correct. +5 points.</div><div class="explain">Build your trade in step 2. You choose the sides and quantities.</div>';
+          awardCompetitionPoints();
+        }
+      }else{
+        $('#round-status').textContent='Incorrect · freeze';f.innerHTML='<div class="feedback-title">Not quite.</div><div class="explain">5-second freeze. The match clock keeps running.</div>';
+        startFreeze('Incorrect scan');
+      }
+      updateCompetitionUI();return;
+    }
+    $('#answer-yes').classList.toggle('selected',choice);$('#answer-no').classList.toggle('selected',!choice);
+    if(state.correct===null){state.answered++;if(isCorrect)state.score++;state.correct=isCorrect;$('#score').textContent=state.score+' / '+state.answered}
+    $('#answer-yes').disabled=true;$('#answer-no').disabled=true;
+    $('#round-status').textContent=isCorrect?'Correct':'Review';
+    const f=$('#feedback');f.className='feedback show '+(isCorrect?'good':'bad');
+    const explanation=isCorrect?(market.isArb?'Answer recorded. Build the trade you think works in step 2.':'There is no arbitrage to trade, so step 2 is correct automatically.'):'Answer recorded. Use the next round to try again.';
+    f.innerHTML='<div class="feedback-title">'+(isCorrect?'Correct.':'Not quite.')+'</div><div class="explain">'+explanation+'</div>';
+    if(isCorrect&&!market.isArb){
+      $('#round-status').textContent='Correct · step 2 complete';
+      $('#ticket-status').textContent='Correct · no arbitrage';
+      const validation=$('#order-validation');validation.className='order-validation show valid';validation.textContent='No arbitrage · step 2 is correct automatically.';
+    }
+    updateCompetitionControls();
+  }
+  function checkTrade(){
+    if(network.roomActive){
+      if(competition.phase!=='trade')return;
+      const draft=[...$('#order-rows').querySelectorAll('tr')].map(row=>({side:row.querySelector('.order-side').value,quantity:Number(row.querySelector('.order-qty').value)}));
+      if(sendRoomAction({kind:'trade',orders:draft})&&!network.isHost){showTicketMessage('neutral','Trade submitted to the room host…','Checking trade');}
+      return;
+    }
+    const competitiveAttempt=competition.active&&competition.phase==='trade'&&competition.freezeLeft===0;
+    if(competition.active&&!competitiveAttempt)return;
+    const rows=[...$('#order-rows').querySelectorAll('tr')];
+    let selected=false,invalid=false;
+    const orders=[];
+    for(const row of rows){
+      const side=row.querySelector('.order-side').value,quantityInput=row.querySelector('.order-qty');
+      const status=row.querySelector('.order-status');quantityInput.classList.remove('invalid');
+      if(side==='none'){status.textContent='—';status.className='order-status';continue}
+      selected=true;
+      const quantity=Number(quantityInput.value),instrument=orderInstrument(Number(row.dataset.index));
+      const available=side==='buy'?instrument.askSize:instrument.bidSize;
+      if(!Number.isInteger(quantity)||quantity<1||quantity>available){
+        invalid=true;quantityInput.classList.add('invalid');status.textContent=quantity>available?'Over depth · max '+available:'Enter 1–'+available;status.className='order-status invalid';
+      }else{
+        status.textContent='Within depth';status.className='order-status valid';
+        const price=side==='buy'?instrument.ask:instrument.bid;
+        orders.push({index:Number(row.dataset.index),side,quantity,price});
+      }
+    }
+    const result=$('#order-validation');
+    if(!selected){result.className='order-validation show neutral';result.textContent='Choose buy or sell and enter a quantity for at least one instrument.';$('#ticket-status').textContent='No orders';if(competitiveAttempt){$('#ticket-status').textContent='Incorrect · 5-second freeze';startFreeze('Incorrect trade')}return}
+    if(invalid){result.className='order-validation show invalid';result.textContent='Adjust the marked quantities to fit the bid size for sells or the offer size for buys. P&L is not calculated until every order fits.';$('#ticket-status').textContent='Review sizes';if(competitiveAttempt){$('#ticket-status').textContent='Incorrect · 5-second freeze';startFreeze('Incorrect trade')}return}
+    const comboIndex=state.market.legs.length;
+    const comboOrder=orders.find(order=>order.index===comboIndex);
+    let pnl,maximumVolume,atMaxVolume,tradeMessage;
+    if(comboOrder&&orders.length===1){
+      const comboOnly=evaluateComboOnlyTrade(state.market,comboOrder);
+      if(!comboOnly.valid){result.className='order-validation show neutral';result.textContent=comboOnly.message;$('#ticket-status').textContent='Not guaranteed profitable';if(competitiveAttempt){$('#ticket-status').textContent='Incorrect · 5-second freeze';startFreeze('Incorrect trade')}return}
+      ({pnl,maximumVolume,atMaxVolume}=comboOnly);tradeMessage=comboOnly.message;
+    }else{
+      const comboPosition=comboOrder?(comboOrder.side==='buy'?comboOrder.quantity:-comboOrder.quantity):0;
+      const legPositions=state.market.legs.map((_,index)=>{
+        const order=orders.find(item=>item.index===index);
+        return order?(order.side==='buy'?order.quantity:-order.quantity):0;
+      });
+      const balanced=comboPosition!==0&&legPositions.every((position,index)=>position+comboPosition*state.market.terms[index]===0);
+      if(!balanced){
+        result.className='order-validation show neutral';result.textContent='Order sizes fit the book, but this is not a complete hedge yet. Adjust the combo and leg positions to offset the relationship.';$('#ticket-status').textContent='Hedge incomplete';if(competitiveAttempt){$('#ticket-status').textContent='Incorrect · 5-second freeze';startFreeze('Incorrect trade')}return;
+      }
+      pnl=orders.reduce((sum,order)=>sum+(order.side==='sell'?1:-1)*order.price*order.quantity,0);
+      maximumVolume=maximumComboVolume(state.market,comboOrder.side);atMaxVolume=comboOrder.quantity===maximumVolume;
+      tradeMessage='Complete hedge · locked-in P&L: '+(pnl>0?'+':'')+'$'+fmt(pnl)+' before fees.';
+    }
+    if(!atMaxVolume){
+      result.className='order-validation show neutral';result.textContent=maximumVolumeMessage();
+      $('#ticket-status').textContent='Check volume again';
+      if(competitiveAttempt){$('#ticket-status').textContent='Incorrect · 5-second freeze';startFreeze('You need to check the volume again');}
+      return;
+    }
+    result.className='order-validation show '+(pnl>0?'profit':pnl<0?'loss':'flat');
+    result.innerHTML='<strong>'+tradeMessage.replace('&','&amp;')+'</strong>';
+    $('#ticket-status').textContent=pnl>0?'Trade profitable':pnl<0?'Trade loss':'Break-even';
+    if(competitiveAttempt){
+      if(pnl>0){
+        $('#ticket-status').textContent='Correct · +5 points';result.innerHTML+='<div style="margin-top:4px">Correct trade · +5 points.</div>';
+        competition.phase='settling';awardCompetitionPoints();updateCompetitionUI();
+        setTimeout(()=>{if(competition.active&&competition.phase==='settling')advanceCompetitionRound()},650);
+      }else{
+        $('#ticket-status').textContent='Incorrect · 5-second freeze';result.innerHTML+='<div style="margin-top:4px">Not a profitable arbitrage trade. 5-second freeze.</div>';
+        startFreeze('Incorrect trade');
+      }
+    }
+  }
+  function nextMarket(showToast=false){
+    state.round++;state.market=generateMarket();state.correct=null;render();
+    if(showToast){const toast=$('#toast');toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1400)}
+  }
+  $('#next-round').addEventListener('click',()=>nextMarket(true));
+  $('#answer-yes').addEventListener('click',()=>reveal(true));
+  $('#answer-no').addEventListener('click',()=>reveal(false));
+  $('#order-rows').addEventListener('change',(event)=>{
+    const row=event.target.closest('tr');if(!row)return;
+    if(event.target.matches('.order-side'))markOrderReady(row);
+    else if(event.target.matches('.order-qty')){row.querySelector('.order-status').textContent='Ready to check';row.querySelector('.order-status').className='order-status';event.target.classList.remove('invalid');clearOrderResult()}
+  });
+  $('#order-rows').addEventListener('input',(event)=>{
+    if(!event.target.matches('.order-qty'))return;
+    const row=event.target.closest('tr');row.querySelector('.order-status').textContent='Ready to check';row.querySelector('.order-status').className='order-status';event.target.classList.remove('invalid');clearOrderResult();
+  });
+  $('#check-orders').addEventListener('click',checkTrade);
+  $('#clear-orders').addEventListener('click',clearOrders);
+  $('#no-trade').addEventListener('click',submitNoTrade);
+  $('#competition-open').addEventListener('click',openCompetitionSetup);
+  $('#connection-mode').addEventListener('change',()=>{
+    $('#join-code-row').style.display=$('#connection-mode').value==='join'?'grid':'none';
+    $('#room-duration-row').style.display=$('#connection-mode').value==='create'?'grid':'none';
+    $('#start-competition').textContent=$('#connection-mode').value==='create'?'Create room':'Join room';
+    $('#competition-dialog-status').classList.remove('show');
+  });
+  $('#cancel-competition').addEventListener('click',()=>{
+    if(!competition.active)cleanupNetwork();
+    $('#competition-modal').classList.remove('show');
+  });
+  $('#start-competition').addEventListener('click',createOrJoinRoom);
+  $('#start-room-match').addEventListener('click',startRoomMatch);
+  $('#restart-room-match').addEventListener('click',startRoomMatch);
+  $('#end-competition').addEventListener('click',closeRoom);
+  $('#copy-room-code').addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText(network.roomCode);$('#copy-room-code').textContent='Copied';setTimeout(()=>$('#copy-room-code').textContent='Copy',1200)}
+    catch{$('#copy-room-code').textContent=network.roomCode;setTimeout(()=>$('#copy-room-code').textContent='Copy',1800)}
+  });
+  $('#join-room-code').addEventListener('input',event=>{event.target.value=event.target.value.replace(/\D/g,'').slice(0,6)});
+  $('#competition-modal').addEventListener('click',event=>{if(event.target===$('#competition-modal')){if(!competition.active)cleanupNetwork();$('#competition-modal').classList.remove('show')}});
+  state.market=generateMarket();render();
+})();
+</script>
+</body>
+</html>
