@@ -2,6 +2,8 @@
 
 A single-page practice game for spotting arbitrage in randomized synthetic markets and checking trades against displayed prices and volume. It uses simulated quotes only; it does not place real trades.
 
+Copyright © 2026 [linleihappy](https://github.com/linleihappy).
+
 ## Run the game
 
 1. Download or clone this repository.
